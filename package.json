@@ -22,6 +22,8 @@
     "@payloadcms/next": "3.74.0",
     "@payloadcms/richtext-lexical": "3.74.0",
     "@payloadcms/ui": "3.74.0",
+    "@radix-ui/react-slot": "^1.2.4",
+    "class-variance-authority": "^0.7.1",
     "cross-env": "^7.0.3",
     "dotenv": "16.4.7",
     "graphql": "^16.8.1",
@@ -30,7 +32,8 @@
     "payload": "3.74.0",
     "react": "19.2.1",
     "react-dom": "19.2.1",
-    "sharp": "0.34.2"
+    "sharp": "0.34.2",
+    "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
     "@playwright/test": "1.56.1",
