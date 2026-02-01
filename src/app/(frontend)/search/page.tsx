@@ -27,7 +27,7 @@ export default function SearchPage() {
                         Search Products
                     </h1>
                     <p className="mt-2 text-muted-foreground">
-                        Find exactly what you're looking for
+                        Find exactly what you&apos;re looking for
                     </p>
                 </div>
 

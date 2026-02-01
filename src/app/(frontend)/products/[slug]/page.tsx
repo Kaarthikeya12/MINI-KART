@@ -7,7 +7,14 @@ import { notFound } from 'next/navigation'
 
 import { ProductDetail } from '../../../../components/ProductDetail'
 
-export default async function ProductPage({ params }: { params: { slug: string } }) {
+type PageProps = {
+    params: Promise<{
+        slug: string
+    }>
+}
+
+export default async function ProductPage({ params }: PageProps) {
+    const { slug } = await params
     const payloadConfig = await config
     const payload = await getPayload({ config: payloadConfig })
     const headers = await getHeaders()
@@ -17,7 +24,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
         collection: 'products',
         where: {
             slug: {
-                equals: params.slug,
+                equals: slug,
             },
         },
         depth: 2,

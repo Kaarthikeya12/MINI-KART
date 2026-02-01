@@ -79,7 +79,7 @@ export async function createOrder(orderData: OrderData) {
                 const now = new Date()
                 const expiry = new Date(discount.expiry)
 
-                if (expiry > now && discount.usedCount < discount.maxUses) {
+                if (expiry > now && (discount.usedCount || 0) < discount.maxUses) {
                     if (discount.type === 'flat') {
                         discountAmount = discount.value
                     } else if (discount.type === 'percentage') {
@@ -93,7 +93,7 @@ export async function createOrder(orderData: OrderData) {
                         collection: 'discounts',
                         id: discount.id,
                         data: {
-                            usedCount: discount.usedCount + 1,
+                            usedCount: (discount.usedCount || 0) + 1,
                         },
                     })
                 }
@@ -110,7 +110,9 @@ export async function createOrder(orderData: OrderData) {
             id: user.id,
         })
 
-        if (userData.coins < coinsUsed) {
+        const userCoins = userData.coins || 0
+
+        if (userCoins < coinsUsed) {
             return { success: false, error: 'Insufficient coins' }
         }
 
@@ -139,7 +141,7 @@ export async function createOrder(orderData: OrderData) {
             collection: 'users',
             id: user.id,
             data: {
-                coins: userData.coins - coinsUsed,
+                coins: userCoins - coinsUsed,
             },
         })
 
@@ -164,7 +166,7 @@ export async function createOrder(orderData: OrderData) {
 
         const totalOrders = userOrders.totalDocs
         const coinsToAward = Math.floor(totalOrders / 2)
-        const currentCoins = userData.coins - coinsUsed
+        const currentCoins = userCoins - coinsUsed
 
         if (coinsToAward > currentCoins) {
             await payload.update({

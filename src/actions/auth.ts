@@ -88,8 +88,7 @@ export async function logoutAction() {
         const payloadConfig = await config
         const payload = await getPayload({ config: payloadConfig })
         const headers = await getHeaders()
-
-        await payload.logout({ headers })
+        
         const cookieStore = await cookies()
         cookieStore.delete('payload-token')
 

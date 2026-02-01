@@ -57,7 +57,7 @@ export default async function NotificationsPage() {
                         <CardContent className="flex min-h-96 items-center justify-center">
                             <div className="text-center">
                                 <CheckCircle className="mx-auto h-16 w-16 text-muted-foreground mb-4" />
-                                <h3 className="text-xl font-semibold">You're all caught up!</h3>
+                                <h3 className="text-xl font-semibold">You&apos;re all caught up!</h3>
                                 <p className="mt-2 text-sm text-muted-foreground">
                                     No new notifications at the moment
                                 </p>

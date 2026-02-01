@@ -34,14 +34,18 @@ export async function addToCart(productId: string, quantity: number = 1) {
                 collection: 'carts',
                 data: {
                     user: user.id,
-                    items: [{ product: productId, quantity }],
+                    items: [{ product: parseInt(productId), quantity }],
                 },
             })
         } else {
             // Update existing cart
             const existingItems = cart.items || []
+            const productIdNum = parseInt(productId) // Convert once
             const existingItemIndex = existingItems.findIndex(
-                (item: any) => item.product === productId || item.product?.id === productId
+                (item: any) => {
+                    const itemProductId = typeof item.product === 'object' ? item.product?.id : item.product
+                    return itemProductId === productIdNum
+                }
             )
 
             let updatedItems
@@ -53,8 +57,8 @@ export async function addToCart(productId: string, quantity: number = 1) {
                     quantity: updatedItems[existingItemIndex].quantity + quantity,
                 }
             } else {
-                // Add new product
-                updatedItems = [...existingItems, { product: productId, quantity }]
+                // Add new product - FIX: Convert to number
+                updatedItems = [...existingItems, { product: parseInt(productId), quantity }]
             }
 
             cart = await payload.update({
@@ -99,9 +103,11 @@ export async function updateCartItem(productId: string, quantity: number) {
             return { success: false, error: 'Cart not found' }
         }
 
-        const updatedItems = cart.items
+        const productIdNum = parseInt(productId) // Convert once
+        const updatedItems = (cart?.items ?? [])
             .map((item: any) => {
-                if (item.product === productId || item.product?.id === productId) {
+                const itemProductId = typeof item.product === 'object' ? item.product?.id : item.product
+                if (itemProductId === productIdNum) {
                     return quantity > 0 ? { ...item, quantity } : null
                 }
                 return item
